@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #00FF00;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'DungGeunMo', 'Press Start 2P', monospace;
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'DungGeunMo', 'Press Start 2P', monospace;
+}
