@@ -1,8 +1,19 @@
+/* 둥근모꼴 폰트 */
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 :root {
   --background: #000000;
   --foreground: #00FF00;
+  --neon-green: #00FF00;
+  --hot-pink: #FF00FF;
 }
 
 @theme inline {
@@ -16,4 +27,112 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'DungGeunMo', 'Press Start 2P', monospace;
+  overflow-x: hidden;
+}
+
+/* 깜빡이는 커서 */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink 1s infinite;
+}
+
+/* Marquee 효과 */
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+/* 윈도우 95 스타일 버튼 */
+.win95-button {
+  background: #c0c0c0;
+  border: 2px outset #c0c0c0;
+  box-shadow: 
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff,
+    2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 8px 16px;
+  font-family: 'DungGeunMo', 'Press Start 2P', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000;
+  text-transform: uppercase;
+  transition: all 0.1s;
+}
+
+.win95-button:active {
+  border: 2px inset #c0c0c0;
+  box-shadow: 
+    inset 2px 2px #808080,
+    inset -2px -2px #ffffff;
+}
+
+.win95-button:hover {
+  background: #d4d4d4;
+}
+
+/* 도스 스타일 입력 박스 */
+.dos-input {
+  background: #000;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  padding: 8px 12px;
+  font-family: 'DungGeunMo', 'Press Start 2P', monospace;
+  font-size: 12px;
+  outline: none;
+}
+
+.dos-input:focus {
+  box-shadow: 0 0 10px #00FF00;
+}
+
+/* 타자기 효과 */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--neon-green);
+  animation: typewriter 3s steps(40) forwards;
+}
+
+/* 떨리는 애니메이션 */
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-2px, -2px) rotate(-1deg); }
+  20% { transform: translate(2px, 2px) rotate(1deg); }
+  30% { transform: translate(-2px, 2px) rotate(-1deg); }
+  40% { transform: translate(2px, -2px) rotate(1deg); }
+  50% { transform: translate(-2px, -2px) rotate(-1deg); }
+  60% { transform: translate(2px, 2px) rotate(1deg); }
+  70% { transform: translate(-2px, 2px) rotate(-1deg); }
+  80% { transform: translate(2px, -2px) rotate(1deg); }
+  90% { transform: translate(-2px, -2px) rotate(-1deg); }
+}
+
+.shake-animation {
+  animation: shake 0.5s infinite;
+}
+
+/* 불꽃 효과 */
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.sparkle {
+  animation: sparkle 0.3s infinite;
 }

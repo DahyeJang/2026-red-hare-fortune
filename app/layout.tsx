@@ -19,38 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
-        {/* 한글 레트로 픽셀 폰트 - DungGeunMo (둥근모꼴) CDN */}
-        <link
-          href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff"
-          as="font"
-          type="font/woff"
-          crossOrigin="anonymous"
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              @font-face {
-                font-family: 'DungGeunMo';
-                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
-                font-weight: normal;
-                font-style: normal;
-              }
-            `,
-          }}
-        />
-        {/* 영문 레트로 픽셀 폰트 - Press Start 2P (Google Fonts) */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body
-        className={`${geistMono.variable} antialiased`}
-        style={{
-          fontFamily: "'DungGeunMo', 'Press Start 2P', monospace",
-        }}
-      >
+      <body className={`${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
