@@ -94,72 +94,93 @@ export default function ResultDisplay({ fortuneText }: ResultDisplayProps) {
     );
   }
 
+  // 공통 마크다운 컴포넌트 스타일
+  const markdownComponents = {
+    h1: ({ node, ...props }: any) => (
+      <h1 
+        className="text-3xl md:text-4xl font-extrabold text-[#00FF00] mb-6 mt-12 tracking-wider" 
+        {...props} 
+      />
+    ),
+    h2: ({ node, ...props }: any) => (
+      <h2 
+        className="text-2xl md:text-3xl font-extrabold text-[#00FF00] mb-4 mt-8 tracking-wide" 
+        {...props} 
+      />
+    ),
+    h3: ({ node, ...props }: any) => (
+      <h3 
+        className="text-xl md:text-2xl font-extrabold text-[#00FF00] mb-3 mt-6 tracking-wide" 
+        {...props} 
+      />
+    ),
+    p: ({ node, ...props }: any) => (
+      <p 
+        className="text-xl md:text-2xl text-[#F0F0F0] leading-relaxed mb-6 font-sans" 
+        {...props} 
+      />
+    ),
+    strong: ({ node, ...props }: any) => (
+      <strong 
+        className="text-[#FF00FF] font-black" 
+        {...props} 
+      />
+    ),
+    em: ({ node, ...props }: any) => (
+      <em 
+        className="text-[#F0F0F0] italic" 
+        {...props} 
+      />
+    ),
+    ol: ({ node, ...props }: any) => (
+      <ol 
+        className="list-decimal list-inside space-y-6 my-8 text-[#F0F0F0] text-xl font-sans" 
+        {...props} 
+      />
+    ),
+    ul: ({ node, ...props }: any) => (
+      <ul 
+        className="list-disc list-inside space-y-6 my-8 text-[#F0F0F0] text-xl font-sans" 
+        {...props} 
+      />
+    ),
+    li: ({ node, ...props }: any) => (
+      <li 
+        className="pl-2 text-[#F0F0F0] font-sans" 
+        {...props} 
+      />
+    ),
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto border-4 border-[#00FF00] p-6 bg-black space-y-8">
-      {/* Public Section - 형광 핑크 박스 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-[#FF00FF] p-6 border-4 border-[#FF00FF] shadow-[0_0_20px_#FF00FF]"
+    <div className="w-full max-w-3xl mx-auto p-6 md:p-8 bg-black shadow-[0_0_20px_#00FF00_inset] rounded-lg relative overflow-hidden">
+      {/* 배경에 은은한 스캔라인 효과 (CSS로 구현) */}
+      <div 
+        className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
-          boxShadow: '0 0 30px #FF00FF, inset 0 0 20px rgba(255, 0, 255, 0.3)',
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.03) 2px, rgba(0, 255, 0, 0.03) 4px)',
         }}
-      >
-        <div className="bg-black p-6 min-h-[300px]">
-          <div className="text-[#FF00FF] font-mono text-sm leading-relaxed">
-            {isTyping ? (
-              <div className="whitespace-pre-wrap">
-                {displayedText}
-                <span className="cursor-blink text-[#FF00FF]">|</span>
-              </div>
-            ) : (
-              <ReactMarkdown
-                components={{
-                  h1: ({ children }) => (
-                    <h1 className="bg-[#FF00FF] text-black font-bold text-xl p-2 mb-4 block w-full">
-                      {children}
-                    </h1>
-                  ),
-                  h2: ({ children }) => (
-                    <h2 className="bg-[#FF00FF] text-black font-bold text-lg p-2 mb-3 mt-4 block w-full">
-                      {children}
-                    </h2>
-                  ),
-                  h3: ({ children }) => (
-                    <h3 className="bg-[#FF00FF] text-black font-bold text-base p-2 mb-2 mt-3 block w-full">
-                      {children}
-                    </h3>
-                  ),
-                  p: ({ children }) => (
-                    <p className="text-[#00FF00] leading-relaxed mb-4">
-                      {children}
-                    </p>
-                  ),
-                  strong: ({ children }) => (
-                    <strong className="text-yellow-400 font-bold">
-                      {children}
-                    </strong>
-                  ),
-                  em: ({ children }) => (
-                    <em className="text-[#00FF00] italic">
-                      {children}
-                    </em>
-                  ),
-                  ol: ({ node, ...props }) => (
-                    <ol className="list-decimal list-inside space-y-2 my-4 text-[#00FF00]" {...props} />
-                  ),
-                  li: ({ node, ...props }) => (
-                    <li className="pl-1 text-[#00FF00] mb-2" {...props} />
-                  ),
-                }}
-              >
-                {publicText || '결과를 불러오는 중입니다...'}
-              </ReactMarkdown>
-            )}
-          </div>
-        </div>
-      </motion.div>
+      />
+
+      {/* 무료 결과 (Public) */}
+      <div className="mb-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {isTyping ? (
+            <div className="whitespace-pre-wrap text-[#F0F0F0] text-xl md:text-2xl leading-relaxed font-sans">
+              {displayedText}
+              <span className="cursor-blink text-[#F0F0F0]">|</span>
+            </div>
+          ) : (
+            <ReactMarkdown components={markdownComponents}>
+              {publicText || '결과를 불러오는 중입니다...'}
+            </ReactMarkdown>
+          )}
+        </motion.div>
+      </div>
 
       {/* Secret Section - 유료 리포트 (구분자가 있을 때만 표시) */}
       {hasSecret && secretText && (
@@ -167,61 +188,20 @@ export default function ResultDisplay({ fortuneText }: ResultDisplayProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="relative mt-8 border-4 border-[#FF00FF] p-4 bg-black"
+          className="relative mt-8 p-4 relative z-10"
         >
           {/* 1. 타이틀 (항상 보임) */}
-          <div className="bg-[#FF00FF] text-black font-bold p-2 mb-4 text-center animate-pulse">
+          <div className="text-[#FF00FF] font-bold p-2 mb-4 text-center animate-pulse text-2xl md:text-3xl drop-shadow-[0_0_8px_#FF00FF]">
             🚨 적토마 시크릿 리포트 (유료) 🚨
           </div>
 
           {/* 2. 내용 영역 (잠겨있음) */}
-          <div className={`relative ${isUnlocked ? '' : 'h-[600px] overflow-hidden'}`}>
+          <div className={`relative ${isUnlocked ? 'h-auto' : 'h-[400px] overflow-hidden'}`}>
             {/* 실제 텍스트 내용 */}
-            <div className={isUnlocked ? '' : 'filter blur-md select-none opacity-50'}>
-              <div className="text-[#00FF00] font-mono text-sm leading-relaxed">
-                <ReactMarkdown
-                  components={{
-                    h1: ({ children }) => (
-                      <h1 className="bg-[#FF00FF] text-black font-bold text-xl p-2 mb-4 block w-full">
-                        {children}
-                      </h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="bg-[#FF00FF] text-black font-bold text-lg p-2 mb-3 mt-4 block w-full">
-                        {children}
-                      </h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className="bg-[#FF00FF] text-black font-bold text-base p-2 mb-2 mt-3 block w-full">
-                        {children}
-                      </h3>
-                    ),
-                    p: ({ children }) => (
-                      <p className="text-[#00FF00] leading-relaxed mb-4">
-                        {children}
-                      </p>
-                    ),
-                    strong: ({ children }) => (
-                      <strong className="text-yellow-400 font-bold">
-                        {children}
-                      </strong>
-                    ),
-                    em: ({ children }) => (
-                      <em className="text-[#00FF00] italic">
-                        {children}
-                      </em>
-                    ),
-                    ol: ({ node, ...props }) => (
-                      <ol className="list-decimal list-inside space-y-2 my-4 text-[#00FF00]" {...props} />
-                    ),
-                    li: ({ node, ...props }) => (
-                      <li className="pl-1 text-[#00FF00] mb-2" {...props} />
-                    ),
-                  }}
-                >
-                  {secretText}
-                </ReactMarkdown>
-              </div>
+            <div className={isUnlocked ? '' : 'filter blur-xl select-none opacity-40 transition-all duration-700'}>
+              <ReactMarkdown components={markdownComponents}>
+                {secretText}
+              </ReactMarkdown>
             </div>
 
             {/* 3. 잠금 해제 버튼 (블러 위에 둥둥 떠있어야 함 - Absolute Position) */}

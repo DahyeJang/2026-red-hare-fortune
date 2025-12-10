@@ -69,13 +69,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-[#00FF00] p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* 헤더 - Marquee 효과 */}
-        <div className="overflow-hidden bg-[#FF00FF] py-4 border-4 border-[#FF00FF] shadow-[0_0_20px_#FF00FF]">
-          <div className="marquee text-black font-bold text-2xl md:text-4xl">
-            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
-            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
-            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
-          </div>
+        {/* 헤더 - 네온 사인 효과 */}
+        <div className="w-full bg-black py-6 md:py-8 mb-4 md:mb-8 px-4">
+          <h1 className="text-xl md:text-3xl lg:text-5xl font-extrabold text-center tracking-wider bg-gradient-to-r from-[#FF00FF] to-[#FFA500] bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(255,0,255,0.5)] whitespace-normal break-keep leading-snug">
+            적토마의 2026년 팩트폭행 운세
+          </h1>
+          {/* 결과가 없을 때만 경고 문구 표시 */}
+          {!result && (
+            <p className="text-center text-red-400 mt-4 md:mt-6 font-mono text-sm md:text-lg break-keep">
+              ⚠️ 멘탈 약한 자는 뒤로가기를 누르시오 ⚠️
+            </p>
+          )}
         </div>
 
         {/* 로딩 화면 */}
@@ -121,7 +125,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-black border-4 border-[#00FF00] p-8 shadow-[0_0_20px_#00FF00]"
+            className="bg-black p-8 border-[#00FF00] shadow-[0_0_20px_#00FF00]"
           >
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#00FF00] text-center">
               &gt; 사주 정보 입력
@@ -134,10 +138,28 @@ export default function Home() {
                   생년월일 (YYYY-MM-DD)
                 </label>
                 <input
-                  type="date"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={10}
                   value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  className="dos-input w-full"
+                  onChange={(e) => {
+                    // 1. 숫자만 추출
+                    const num = e.target.value.replace(/[^0-9]/g, '');
+                    
+                    // 2. 자동 포맷팅 로직 (YYYY-MM-DD)
+                    let formattedDate = '';
+                    if (num.length <= 4) {
+                      formattedDate = num;
+                    } else if (num.length <= 6) {
+                      formattedDate = `${num.slice(0, 4)}-${num.slice(4)}`;
+                    } else {
+                      formattedDate = `${num.slice(0, 4)}-${num.slice(4, 6)}-${num.slice(6, 8)}`;
+                    }
+                    
+                    setBirthDate(formattedDate);
+                  }}
+                  className="w-full bg-black border-b-2 border-[#00FF00] text-white text-[24px] h-16 pl-4 focus:outline-none placeholder-green-800 font-dunggeunmo text-left mb-8"
+                  placeholder="1998-05-24"
                   required
                 />
               </div>
@@ -148,13 +170,19 @@ export default function Home() {
                   태어난 시간 (0-23)
                 </label>
                 <input
-                  type="number"
-                  min="0"
-                  max="23"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
                   value={birthTime}
-                  onChange={(e) => setBirthTime(e.target.value)}
-                  className="dos-input w-full"
-                  placeholder="14"
+                  onChange={(e) => {
+                    // 숫자만 입력되도록 강제
+                    const val = e.target.value.replace(/[^0-9]/g, '');
+                    if (val === '' || parseInt(val) <= 23) {
+                      setBirthTime(val);
+                    }
+                  }}
+                  className="w-full bg-black border-b-2 border-[#00FF00] text-white text-[24px] h-16 pl-4 focus:outline-none placeholder-green-800 font-dunggeunmo text-left mb-8"
+                  placeholder="14 (0~23시)"
                   required
                 />
               </div>
@@ -170,12 +198,9 @@ export default function Home() {
               <motion.button
                 type="submit"
                 disabled={isLoading}
-                className="win95-button w-full py-4 text-lg font-bold bg-gradient-to-r from-[#FF00FF] to-[#00FF00] text-black border-4 border-white shadow-[0_0_30px_#FF00FF] relative overflow-hidden"
+                className="win95-button w-full h-16 md:h-20 text-xl md:text-3xl font-bold font-dunggeunmo mt-4 md:mt-8 relative overflow-hidden"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                style={{
-                  boxShadow: '0 0 40px #FF00FF, 0 0 80px #00FF00, inset 0 0 20px rgba(255, 255, 255, 0.3)',
-                }}
               >
                 {isLoading ? (
                   <span className="sparkle">🔥 팩트폭행 준비 중... 🔥</span>
@@ -226,7 +251,7 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  다시 시작하기
+                  다시 운세 보기
                 </motion.button>
               </div>
             </motion.div>

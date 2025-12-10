@@ -55,26 +55,29 @@ body {
 
 /* 윈도우 95 스타일 버튼 */
 .win95-button {
-  background: #c0c0c0;
-  border: 2px outset #c0c0c0;
-  box-shadow: 
-    inset -2px -2px #808080,
-    inset 2px 2px #ffffff,
-    2px 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 8px 16px;
-  font-family: 'DungGeunMo', 'Press Start 2P', monospace;
-  font-size: 14px;
   cursor: pointer;
-  color: #000;
-  text-transform: uppercase;
+  background: #c0c0c0;
+  color: #000000;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: 
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px grey,
+    inset 2px 2px white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.1s;
 }
 
 .win95-button:active {
-  border: 2px inset #c0c0c0;
   box-shadow: 
-    inset 2px 2px #808080,
-    inset -2px -2px #ffffff;
+    inset -1px -1px white,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px grey;
+  padding-top: 2px;
 }
 
 .win95-button:hover {
