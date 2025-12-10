@@ -1,8 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ResultDisplay from '@/components/ResultDisplay';
+
+const loadingMessages = [
+  '적토마가 당근 먹는 중...',
+  '네 사주팔자 훔쳐보는 중...',
+  '2026년 불지옥 온도 체크 중...',
+  '너의 과거 행실 조회 중...',
+  '팩트폭행 장전 중...',
+  '서버가 불타오르는 중...'
+];
 
 export default function Home() {
   const [birthDate, setBirthDate] = useState('');
@@ -10,12 +19,25 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<{ fortune: string; saju: any } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [currentLoadingMessage, setCurrentLoadingMessage] = useState(0);
+
+  // 로딩 메시지 순환
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const interval = setInterval(() => {
+      setCurrentLoadingMessage((prev) => (prev + 1) % loadingMessages.length);
+    }, 2000); // 2초마다 변경
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     setResult(null);
+    setCurrentLoadingMessage(0);
 
     try {
       const response = await fetch('/api/fortune', {
@@ -50,12 +72,52 @@ export default function Home() {
         {/* 헤더 - Marquee 효과 */}
         <div className="overflow-hidden bg-[#FF00FF] py-4 border-4 border-[#FF00FF] shadow-[0_0_20px_#FF00FF]">
           <div className="marquee text-black font-bold text-2xl md:text-4xl">
-            🚨 긴급 경보 🚨 2026년 적토마가 쳐들어온다 🚨 긴급 경보 🚨 2026년 적토마가 쳐들어온다 🚨 긴급 경보 🚨 2026년 적토마가 쳐들어온다
+            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
+            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
+            🚨 긴급 경보 🚨 2026년 적토마의 팩트폭행 운세
           </div>
         </div>
 
+        {/* 로딩 화면 */}
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-black border-4 border-[#00FF00] p-8 shadow-[0_0_20px_#00FF00]"
+          >
+            <div className="text-center py-12">
+              <motion.div
+                key={currentLoadingMessage}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-[#00FF00] font-mono text-2xl md:text-3xl font-bold animate-pulse"
+              >
+                {loadingMessages[currentLoadingMessage]}
+              </motion.div>
+              <div className="mt-8 flex justify-center gap-2">
+                <motion.div
+                  className="w-3 h-3 bg-[#00FF00] rounded-full"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                />
+                <motion.div
+                  className="w-3 h-3 bg-[#00FF00] rounded-full"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                />
+                <motion.div
+                  className="w-3 h-3 bg-[#00FF00] rounded-full"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* 입력 폼 */}
-        {!result && (
+        {!result && !isLoading && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
