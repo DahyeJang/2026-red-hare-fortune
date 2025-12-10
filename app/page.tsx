@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ResultDisplay from '@/components/ResultDisplay';
+import NativeShareButton from '@/components/NativeShareButton';
 
 const loadingMessages = [
   '적토마가 당근 먹는 중...',
@@ -238,8 +239,12 @@ export default function Home() {
             >
               <ResultDisplay fortuneText={result.fortune} />
               
-              {/* 다시 시작 버튼 */}
-              <div className="text-center">
+              {/* 공유 버튼과 다시 운세 보기 버튼 */}
+              <div className="flex flex-col md:flex-row items-center justify-center mt-10 mb-16 gap-4 px-4 w-full">
+                {/* 1. 공유 버튼 (NativeShareButton 컴포넌트 사용) */}
+                <NativeShareButton />
+
+                {/* 2. 다시 운세 보기 버튼 */}
                 <motion.button
                   onClick={() => {
                     setResult(null);
@@ -247,11 +252,11 @@ export default function Home() {
                     setBirthTime('');
                     setError(null);
                   }}
-                  className="win95-button bg-[#00FF00] text-black border-4 border-white px-8 py-4 text-lg font-bold"
+                  className="win95-button w-full md:w-auto md:flex-1 h-16 md:h-20 text-xl md:text-2xl font-bold font-dunggeunmo bg-[#222] text-[#00FF00] border-2 border-[#00FF00] shadow-none px-6"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  다시 운세 보기
+                  🔄 다시 운세 보기
                 </motion.button>
               </div>
             </motion.div>

@@ -192,7 +192,7 @@ export default function ResultDisplay({ fortuneText }: ResultDisplayProps) {
         >
           {/* 1. 타이틀 (항상 보임) */}
           <div className="text-[#FF00FF] font-bold p-2 mb-4 text-center animate-pulse text-2xl md:text-3xl drop-shadow-[0_0_8px_#FF00FF]">
-            🚨 적토마 시크릿 리포트 (유료) 🚨
+            🚨 적토마 시크릿 리포트 🚨
           </div>
 
           {/* 2. 내용 영역 (잠겨있음) */}
@@ -213,7 +213,7 @@ export default function ResultDisplay({ fortuneText }: ResultDisplayProps) {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  🔒 1,000원에 봉인 해제
+                  🔒 500원에 리포트 확인하기
                 </motion.button>
                 <p className="mt-4 text-white font-bold drop-shadow-[0_0_4px_rgba(0,0,0,1)]">
                   (이미 1,240명이 팩폭을 확인했습니다)
